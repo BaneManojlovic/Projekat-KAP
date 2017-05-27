@@ -10,7 +10,7 @@ import numpy as np
 import pandas as pd
 import seaborn as sns
 from scipy import stats
-
+import io
 
 class Klasa1:
 #----------- Funkcije za opciju 1. ------------------------------------------------------------------------------------
@@ -31,16 +31,14 @@ class Klasa1:
                         'Septembar', 'Oktobar', 'Novembar', 'Prosecna produktivnost','Stalno aktivni salteri',
                         'Povremeno aktivni salteri', 'Neaktivni salteri', 'Ukupno saltera u posti',
                         'Automatizovani salteri', 'Univerzalni salteri', 'Salteri uplata isplata']
-        print('\nPrimer ispisa dela podataka iz baze:\n')
+        print('\na. Primer ispisa dela podataka iz baze:\n')
         print(baza.head(5))
         input('Press any key to continue . . . ')
-        print('\na. Opis podataka iz baze:')
+        print('\nb. Opis podataka iz baze:')
         print('(Broj Organizacionih celina, Broj obelezja) = ', baza.shape)
         input('\nPress any key to continue . . . ')
-        print('\nb. Detaljan opis podataka:')
+        print('\nc. Detaljan opis podataka:')
         print(baza.describe())
-
-
 
     def produktivnost(self):
         baza = pd.read_csv("baza.csv")
@@ -48,76 +46,36 @@ class Klasa1:
                         'Septembar', 'Oktobar', 'Novembar', 'Prosecna produktivnost','Stalno aktivni salteri',
                         'Povremeno aktivni salteri', 'Neaktivni salteri', 'Ukupno saltera u posti',
                         'Automatizovani salteri', 'Univerzalni salteri', 'Salteri uplata isplata']
-    #11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-        #data = [['a','b'], ['a','c'], ['b','d']]
-        M = baza.head(20)    #<--- Uzimam samo prvih 20 redova iz baze za ilustraciju
-        search = M['Organizaciona celina'].values
-        print("Odaberite zeljenu JPM:")
-        jpm = sys.stdin.readline()
 
-   #     data = [['a','b'], ['a','c'], ['b','d']]
-     #   search = 'c'
-      #  any(e[1] == jpm for e in search)
-        result = [element for element in search if element[1] == jpm]
-        print(result)
+        print("\nOdaberite zeljenu JPM (unesite redni broj):")
+        with open('baza.csv','r') as longishfile:
+            reader=csv.reader(longishfile)
+            rows=[r for r in reader]
+            jpm = sys.stdin.readline()
+            jpm = int(jpm)
+            print("\na. Parametri JPM: ")
+          #  print (rows[jpm])           #Ispisuje liniju sa parametrima JPM
+            vrednosti = rows[jpm]
+            print('\tOrganizaciona jedinica: ', vrednosti[0])
+            print('\tStalno aktivnih saltera: ',vrednosti[13])
+            print('\tPovremeno aktivnih saltera: ', vrednosti[14])
+            print('\tNeaktivnih saltera: ', vrednosti[15])
+            print('\tAutomatizovanih saltera: ', vrednosti[17])
+            print('\tUniverzalnih saltera: ', vrednosti[18])
+            print('\tSaltera uplata/isplata: ', vrednosti[19])
+            print('\tUkupno saltera u JPM: ', vrednosti[16] ,'\n')
+            os.system('pause')
 
-     #   search = 'c'
-     #   for sublist in search:
-     #       if sublist[1] == jpm:
-     #           print( "Found it!", sublist)
-     #       break
-
-    #1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
- #       M = baza.head(20)    #<--- Uzimam samo prvih 20 redova iz baze za ilustraciju
- #       A = M['Organizaciona celina'].values
- #       B = M['Domacinstva'].values
- #       C = M['Pravna lica'].values
- #       D = M['Korisnici'].values
-
- #       print(" d. Graficki prikaz broja analiziranih domacinstava")
- #       plt.title('Prikaz broja domacinstava na svakom PAK-u (parcijalni uzorak)')
- #       width = 1/1.5
- #       plt.bar(A, B, width, color="blue")
- #       plt.xlabel('PAK')
- #       plt.ylabel('Domacinstva')
- #       plt.grid(True)
- #       plt.show()
-        """
-        input('Press any key to continue . . . ')
-        print(" e. Graficki prikaz broja analiziranih pravnih lica ")
-        plt.title('Prikaz broja registrovanih pravnih lica na svakom PAK-u (parcijalni uzorak)')
-        width = 1/1.5
-        plt.bar(A, C, width, color="red")
-        plt.xlabel('PAK')
-        plt.ylabel('Pravna lica')
-        plt.grid(True)
-        plt.show()
-
-        input('Press any key to continue ...')
-        print(" f. Graficki prikaz ukupnog broja analiziranih svih korisnika zajedno ")
-        plt.title('Prikaz broja svih korisnika na svakom PAK-u (parcijalni uzorak)')
-        width = 1/1.5
-        plt.bar(A, D, width, color="green")
-        plt.xlabel('PAK')
-        plt.ylabel('Korisnici')
-        plt.grid(True)
-        plt.show()
-        """
-
-    """
-    def kategorije(self):
-        print('c. Prikaz posiljaka prema tipovima ')
-        baza = pd.read_csv("baza.csv")
-        baza.columns = ['PAK', 'Objekti', 'Broj spratova', 'Domacinstva', 'Pravna lica stan',  'Pravna lica lokal',
-                        'Pravna lica', 'Korisnici', 'Liftovi', 'Sanducici', 'O', 'OS', 'R' ,'RS', 'AR', 'ARS', 'PU',
-                        'TR10', 'V', 'Votk', 'Ropt', 'Rino', 'TG', 'Posiljke']
-        labels = 'O', 'OS', 'R' ,'RS', 'AR', 'ARS', 'PU', 'TR10', 'V', 'Votk', 'Ropt', 'Rino', 'TG'
-        sizes = [max(baza[['O']].values), max(baza[['OS']].values), max(baza[['R']].values), max(baza[['RS']].values),
-                 max(baza[['AR']].values), max(baza[['ARS']].values), max(baza[['PU']].values), max(baza[['TR10']].values),
-                 max(baza[['V']].values), max(baza[['Votk']].values), max(baza[['Ropt']].values), max(baza[['Rino']].values),
-                 max(baza[['TG']].values)]
-        plt.pie(sizes,  labels=labels, autopct='%1.1f%%', startangle=55)
-        plt.title('Broj posiljaka po tipovima\n')
-        plt.axis('equal')
-        plt.show()
-    """
+            print('b. Graficki prikaz produktivnosti JPM broj: ', vrednosti[0])
+            T = np.array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11])
+            K = np.array([float(vrednosti[1]),float(vrednosti[2]),float(vrednosti[3]),float(vrednosti[4]),
+                           float(vrednosti[5]),float(vrednosti[6]),float(vrednosti[7]),float(vrednosti[8]),
+                      float(vrednosti[9]),float(vrednosti[10]),float(vrednosti[11])])
+            my_xticks = ['Januar','Februar','Mart','April', 'Maj', 'Jun', 'Jul', 'Avgust', 'Septembar', 'Oktobar', 'Novembar']
+            plt.ylabel('Produktivnost')
+            plt.title('Produktivnost odabrane JPM')
+            plt.grid(True)
+            plt.xticks(T, my_xticks, rotation='45')
+            plt.plot(T, K, 'b-')
+            plt.show()
+            os.system('pause')
